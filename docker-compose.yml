@@ -1,0 +1,5 @@
+services:
+  rollup-poc-ubuntu:
+    build: .
+    container_name: rollup-ubuntu-lab
+    command: sleep infinity
