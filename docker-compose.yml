@@ -1,5 +1,22 @@
 services:
-  rollup-poc-ubuntu:
-    build: .
-    container_name: rollup-ubuntu-lab
+  atacante-vm:
+    build:
+      context: .
+      dockerfile: Dockerfile.atacante
+    container_name: rollup-atacante
+    command: bash -c "python3 -m http.server 8000"
+    networks:
+      - rollup-red
+
+  victima-vm:
+    build:
+      context: .
+      dockerfile: Dockerfile.victima
+    container_name: rollup-victima
     command: sleep infinity
+    networks:
+      - rollup-red
+
+networks:
+  rollup-red:
+    driver: bridge

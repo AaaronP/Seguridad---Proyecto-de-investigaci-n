@@ -4,17 +4,14 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get install -y nodejs npm && \
+    apt-get install -y python3 && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /rollup-lab
 
-RUN npm init -y && \
-    npm install rollup@4.58.0
-
+# Copiamos los archivos del atacante
 COPY src/ ./src/
-COPY innocent_script.js .
+COPY build.js .
+COPY package.json .
 
-RUN mkdir -p /tmp
-
-CMD ["node", "innocent_script.js"]
+RUN tar -czvf paquete-malicioso.tar.gz src build.js package.json
