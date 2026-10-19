@@ -1,18 +1,20 @@
 services:
-  atacante-vm:
-    build:
-      context: .
-      dockerfile: Dockerfile.atacante
-    container_name: rollup-atacante
-    command: bash -c "python3 -m http.server 8000"
-    networks:
-      - rollup-red
-
   victima-vm:
     build:
       context: .
       dockerfile: Dockerfile.victima
     container_name: rollup-victima
+    command: node server.js
+    ports:
+      - "3000:3000"
+    networks:
+      - rollup-red
+
+  atacante-vm:
+    build:
+      context: .
+      dockerfile: Dockerfile.atacante
+    container_name: rollup-atacante
     command: sleep infinity
     networks:
       - rollup-red

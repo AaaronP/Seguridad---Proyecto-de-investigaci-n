@@ -4,7 +4,22 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get install -y nodejs npm wget python3 && \
+    apt-get install -y nodejs npm iproute2 nano && \
     rm -rf /var/lib/apt/lists/*
 
+RUN mkdir -p /opt/servicio-interno && \
+    echo 'console.log("Auditoria post-build ejecutada correctamente.");' > /opt/servicio-interno/post-build.js
+
 WORKDIR /rollup-lab
+
+RUN npm init -y && \
+    npm install rollup@4.58.0
+
+RUN mkdir -p src /tmp && \
+    echo 'console.log("Hello world! index.js");' > src/index.js
+
+COPY server.js .
+
+EXPOSE 3000
+
+CMD ["node", "server.js"]

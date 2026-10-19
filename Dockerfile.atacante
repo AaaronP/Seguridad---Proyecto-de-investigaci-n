@@ -4,14 +4,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get install -y python3 && \
+    apt-get install -y curl netcat-openbsd iproute2 iputils-ping nano && \
     rm -rf /var/lib/apt/lists/*
 
-WORKDIR /rollup-lab
+WORKDIR /atacante
 
-# Copiamos los archivos del atacante
-COPY src/ ./src/
-COPY build.js .
-COPY package.json .
-
-RUN tar -czvf paquete-malicioso.tar.gz src build.js package.json
+CMD ["sleep", "infinity"]
