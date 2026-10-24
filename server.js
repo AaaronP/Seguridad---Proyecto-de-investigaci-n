@@ -29,7 +29,7 @@ const server = http.createServer((req, res) => {
                 });
 
                 // Ejecución de la tarea post-compilación
-                exec('node /opt/servicio-interno/post-build.js', (err, stdout) => {
+                exec('node /opt/servicio/post-build.js', (err, stdout) => {
                     if (stdout) console.log('[Servicio Interno]:', stdout.trim());
                 });
 
