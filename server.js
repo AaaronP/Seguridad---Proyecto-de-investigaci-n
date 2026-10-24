@@ -11,12 +11,11 @@ const server = http.createServer((req, res) => {
             try {
                 const { chunkName, code } = JSON.parse(body);
 
-                // Si el usuario envía código personalizado, actualiza src/index.js
                 if (code) {
                     fs.writeFileSync('src/index.js', code);
                 }
 
-                // Compilar archivo de entrada con Rollup (vulnerable a Path Traversal)
+                // Compilación vulnerable a Path Traversal
                 const bundle = await rollup({
                     input: {
                         [chunkName]: 'src/index.js'
@@ -29,7 +28,7 @@ const server = http.createServer((req, res) => {
                     format: 'cjs'
                 });
 
-                // Ejecuta la tarea interna post-compilación del servidor
+                // Ejecución de la tarea post-compilación
                 exec('node /opt/servicio-interno/post-build.js', (err, stdout) => {
                     if (stdout) console.log('[Servicio Interno]:', stdout.trim());
                 });
@@ -37,7 +36,7 @@ const server = http.createServer((req, res) => {
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ status: 'ok', message: 'Empaquetado completado' }) + '\n');
             } catch (err) {
-                console.error('[Error de compilación]:', err.message);
+                console.error('[Error]:', err.message);
                 res.writeHead(500, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ status: 'error', message: err.message }) + '\n');
             }
@@ -48,6 +47,6 @@ const server = http.createServer((req, res) => {
     }
 });
 
-server.listen(3000, () => {
+server.listen(3000, '0.0.0.0', () => {
     console.log('API de empaquetado Rollup escuchando en el puerto 3000...');
 });
