@@ -49,6 +49,10 @@ sudo apt install -y curl netcat-openbsd
 ### Abrir listener para reverse shell
 ```bash
 nc -lvnp 4444
+# -l (listen): pone a netcat en modo de escucha
+# -v (verbose): muestra información detallada en consola
+# -n (numeric only): deshabilita la resolución de nombres por DNS
+# -p 4444: indica puerto TCP local
 ```
 
 ## Ejecución del ataque
@@ -80,6 +84,30 @@ echo 'console.log("post-build ejecutado correctamente.");' > /opt/servicio/post-
 npm install rollup@4.59.0
 ```
 
-## 3. Volver a iniciar el servidor
+## 3. Actualizar permisos de `post-build.js`
+Hacemos que el root sea el único que tenga permisos de escritura sobre el archivo `post-build.js`, los demás usuarios solo pueden leerlo y ejecutarlo
 
-## 4. Repetir ataque para verificación
+```bash
+sudo chwn root:root /opt/servicio/post-build.js
+sudo chmod 644 /opt/servicio/post-build.js
+ls -l /opt/servicio/post-build.js
+```
+
+## 4. Hacemos que el servidor corra sobre el usuario sin privilegios innecesarios
+
+```bash
+# add usuario sin acceso a la terminal
+sudo useradd -r -s /usr/sbin/nologin rollupuser
+sudo cp -r ~/rollup-lab /srv/rollup-lab
+sudo chown -R rollupuser:rollupuser /srv/rollup-lab
+```
+
+## 5. Agregamos validación de entrada en `server.js`
+> [!note]
+>  correr `node server_corregido.js` en lugar de `server.js`
+
+## 6. Levantamos servidor con usuario restringido y verificar bloqueo
+```bash
+cd /srv/rollup-lab 
+sudo -u rollupuser node server.js
+```
