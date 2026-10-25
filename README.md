@@ -88,7 +88,7 @@ npm install rollup@4.59.0
 Hacemos que el root sea el único que tenga permisos de escritura sobre el archivo `post-build.js`, los demás usuarios solo pueden leerlo y ejecutarlo
 
 ```bash
-sudo chwn root:root /opt/servicio/post-build.js
+sudo chown root:root /opt/servicio/post-build.js
 sudo chmod 644 /opt/servicio/post-build.js
 ls -l /opt/servicio/post-build.js
 ```
